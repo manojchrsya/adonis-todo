@@ -7,7 +7,7 @@ export default class Todos extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.string('task')
-      table.string('status')
+      table.boolean('is_completed')
       table.timestamps(true, true)
     })
   }
