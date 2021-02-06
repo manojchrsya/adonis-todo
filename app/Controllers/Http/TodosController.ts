@@ -1,7 +1,11 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Todo from 'App/Models/Todo'
 
 export default class TodosController {
-  public async index({}: HttpContextContract) {}
+  public async index(ctx: HttpContextContract) {
+    const todos = await Todo.all()
+    return ctx.view.render('index', { todos })
+  }
 
   public async create({}: HttpContextContract) {}
 
