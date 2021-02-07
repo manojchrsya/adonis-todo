@@ -14,6 +14,10 @@ export default class Todo extends BaseModel {
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  @column.dateTime({
+    autoCreate: true,
+    autoUpdate: true,
+    serialize: (value) => value.toFormat('dd LLL yyyy'),
+  })
   public updatedAt: DateTime
 }
