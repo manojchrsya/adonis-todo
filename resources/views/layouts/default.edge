@@ -87,6 +87,36 @@
                 $(".due-date-label").text(formatDate(dateChangeEvent.date));
             });
     });
+
+    function getHiddenForm(options) {
+      var form = document.createElement("form");
+      form.setAttribute("action", options.url);
+      form.setAttribute("method", 'post');
+      return form;
+    }
+
+    $(".update-todo").on("click", function(evt) {
+      evt.preventDefault()
+      var todoId = $(this).parent().attr('data-id');
+      var parent = $(this).parent().parent().parent();
+      var task = $(parent).find('.edit-todo-input').val();
+      var completed = $(parent).find('.update-todo').attr('data-value');
+      var form = getHiddenForm({ url: `/todo/${todoId}?_method=PUT` });
+      var is_completed = document.createElement("input");
+      is_completed.setAttribute("type", "hidden");
+      is_completed.setAttribute("name", "is_completed");
+      is_completed.setAttribute("value", completed);
+      form.appendChild(is_completed);
+      document.body.appendChild(form);
+      form.submit();
+    })
+    $(".delete-todo").on("click", function(evt) {
+      evt.preventDefault()
+      var todoId = $(this).parent().parent().attr('data-id');
+      var form = getHiddenForm({ url: `/todo/${todoId}?_method=DELETE` });
+      document.body.appendChild(form);
+      form.submit();
+    })
   };
 </script>
 </html>

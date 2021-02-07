@@ -2,9 +2,10 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Todo from 'App/Models/Todo'
 
 export default class TodosController {
-  public async index(ctx: HttpContextContract) {
+  public async index({ request, view }: HttpContextContract) {
     const todos = await Todo.all()
-    return ctx.view.render('index', { todos })
+    const query = request.only(['id'])
+    return view.render('index', { todos, editable_id: query.id })
   }
 
   public async create({}: HttpContextContract) {}
@@ -15,7 +16,23 @@ export default class TodosController {
 
   public async edit({}: HttpContextContract) {}
 
-  public async update({}: HttpContextContract) {}
+  public async update({ params, request, response }: HttpContextContract) {
+    const { id } = params
+    const todo = await Todo.findOrFail(id)
+    const body = request.only(['is_completed'])
+    if (todo && body.is_completed) {
+      todo.is_completed = body.is_completed
+      await todo.save()
+    }
+    response.redirect('/')
+  }
 
-  public async destroy({}: HttpContextContract) {}
+  public async destroy({ params, response }: HttpContextContract) {
+    const { id } = params
+    const todo = await Todo.findOrFail(id)
+    if (todo) {
+      await todo.delete()
+    }
+    response.redirect('/')
+  }
 }

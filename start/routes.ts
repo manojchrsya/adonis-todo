@@ -21,3 +21,5 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.get('/', 'TodosController.index')
+Route.put('/todo/:id', 'TodosController.update')
+Route.delete('/todo/:id', 'TodosController.destroy')
