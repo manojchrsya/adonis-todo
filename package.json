@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "build": "node ace build --production",
-    "start": "npm run build && cd ./build && npm install && node server.js",
+    "start": "node build/server.js",
+    "postinstall": "tsc",
     "dev": "node ace serve --watch",
     "lint": "eslint . --ext=.ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "deploy": "git add . && git commit -m Heroku && git push heroku master"
   },
   "devDependencies": {
     "@adonisjs/assembler": "^3.0.6",
