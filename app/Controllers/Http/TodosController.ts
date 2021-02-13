@@ -14,13 +14,12 @@ export default class TodosController {
     return view.render('index', { todos, query })
   }
 
-  public async create({ request, response }: HttpContextContract) {
+  public async create({ request }: HttpContextContract) {
     const data = await request.validate(TodoValidator)
     const todo = new Todo()
     todo.task = data.task
     todo.is_completed = false
-    await todo.save()
-    response.redirect('/')
+    return todo.save()
   }
 
   public async store({}: HttpContextContract) {}
@@ -29,22 +28,21 @@ export default class TodosController {
 
   public async edit({}: HttpContextContract) {}
 
-  public async update({ params, request, response }: HttpContextContract) {
+  public async update({ params, request }: HttpContextContract) {
     const { id } = params
     const todo = await Todo.findOrFail(id)
     const body = request.only(['is_completed', 'task'])
     todo.task = body.task || todo.task
     todo.is_completed = body.is_completed || todo.is_completed
-    await todo.save()
-    response.redirect('/')
+    return todo.save()
   }
 
-  public async destroy({ params, response }: HttpContextContract) {
+  public async destroy({ params }: HttpContextContract) {
     const { id } = params
     const todo = await Todo.findOrFail(id)
     if (todo) {
       await todo.delete()
     }
-    response.redirect('/')
+    return { message: 'Record Deleted successfully;' }
   }
 }
