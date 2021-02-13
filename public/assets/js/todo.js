@@ -30,10 +30,10 @@ $(document).ready(function () {
   $('.create-todo').on('click', function (evt) {
     evt.preventDefault()
     var task = $('.new-task').val()
-    $('.new-task').val('')
     // eslint-disable-next-line @typescript-eslint/naming-convention
     var is_completed = 0
     loadData('/', 'POST', { task, is_completed }, function () {
+      $('.new-task').val('')
       window.location.reload()
     })
   })
